@@ -2,6 +2,7 @@
 #include <phpcpp.h>
 
 #include "Registry.h"
+#include "RegexReplace.h"
 
 using namespace std;
 
@@ -21,6 +22,7 @@ PHPCPP_EXPORT void *get_module()
 	// for the entire duration of the process (that's why it's static)
 	static Php::Extension extension("diskerror_utilities", "0.1");
 	
+	////////////////////////////////////////////////////////////////////////////
 	//	Registry
 	Php::Class<Registry> registry("Diskerror\\Utilities\\Registry");
 
@@ -42,6 +44,32 @@ PHPCPP_EXPORT void *get_module()
 // 	extension.onIdle([]() {
 // 		Registry::clear();
 // 	});
+	
+	
+	////////////////////////////////////////////////////////////////////////////
+	//	RegexReplace
+	Php::Class<RegexReplace> regexRep("Diskerror\\Utilities\\RegexReplace");
+	
+	regexRep.method("__construct", &RegexReplace::__construct, {
+		Php::ByVal("expression", Php::Type::String, true),
+		Php::ByVal("replacement", Php::Type::String, false),
+		Php::ByVal("syntax_option", Php::Type::Numeric, false),
+		Php::ByVal("match_flag", Php::Type::Numeric, false)
+	});
+
+	regexRep.method("set", &RegexReplace::set, {
+		Php::ByVal("expression", Php::Type::String, true),
+		Php::ByVal("replacement", Php::Type::String, false),
+		Php::ByVal("syntax_option", Php::Type::Numeric, false),
+		Php::ByVal("match_flag", Php::Type::Numeric, false)
+	});
+
+	regexRep.method("exec", &RegexReplace::exec, {
+		Php::ByRef("str", Php::Type::String, true)
+	});
+	
+	extension.add(std::move(regexRep));
+	
 	
 	// return the extension
 	return extension;

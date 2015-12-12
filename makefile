@@ -22,6 +22,8 @@ MKDIR	= mkdir -p
 
 
 OBJECTS = \
+	Regex.o \
+	RegexReplace.o \
 	Registry.o \
 	main.o
 
@@ -39,10 +41,16 @@ precompile.o: precompile.hpp
 
 
 
+Regex.o: Regex.cp Regex.h
+	$(CPP)
+
+RegexReplace.o: RegexReplace.cp RegexReplace.h
+	$(CPP)
+
 Registry.o: Registry.cp Registry.h
 	$(CPP)
 
-main.o: main.cp Registry.h
+main.o: main.cp Registry.h RegexReplace.h
 	$(CPP)
 
 

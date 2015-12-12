@@ -7,6 +7,7 @@
 
 #include <phpcpp.h>
 #include <unordered_map>
+#include <regex>
 
 
 // #endif	//	DISKERROR_PRECOMPILE_H
