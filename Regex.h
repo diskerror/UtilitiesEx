@@ -13,7 +13,7 @@ public:
 		Regex();
 		virtual ~Regex();
 	
-	virtual void	__construct(Php::Parameters &) = 0;
+	virtual void	__construct(Php::Parameters &);
 	virtual void	set(Php::Parameters &) = 0;
 	
 	virtual Php::Value	exec(Php::Parameters &) = 0;

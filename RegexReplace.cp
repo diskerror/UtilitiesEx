@@ -4,18 +4,6 @@
 
 using namespace std;
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// RegexReplace::RegexReplace(Php::Parameters &params)
-// {
-// 	if ( params.size() ) {
-// 		this->set(params);
-// 	}
-// }
-// 
-// RegexReplace::~RegexReplace()
-// {
-// }
-
 /**
  * Set regular expression object and replacement string.
  *

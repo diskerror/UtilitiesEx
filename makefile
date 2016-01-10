@@ -1,10 +1,11 @@
 
 NAME			= diskerror_utilities
 
-INI_DIR			= /etc/php5/mods-available/
+PHPE			= /etc/php5
+INI_DIR			= $(PHPE)/mods-available/
 EXTENSION_DIR	= $(shell php-config --extension-dir)
-EXTENSION 		= ${NAME}.so
-INI 			= ${NAME}.ini
+EXTENSION 		= $(NAME).so
+INI 			= $(NAME).ini
 
 COMPILER		= g++
 LINKER			= g++
@@ -14,12 +15,7 @@ LINKER_FLAGS	= -shared
 LDLIBS = \
 	-lphpcpp
 
-CPP	= ${COMPILER} ${COMPILER_FLAGS} -include "precompile.hpp" $<
-
-RM		= rm -f
-CP		= cp -f
-MKDIR	= mkdir -p
-
+CPP	= $(COMPILER) $(COMPILER_FLAGS) -include "precompile.hpp" $<
 
 OBJECTS = \
 	Regex.o \
@@ -28,16 +24,16 @@ OBJECTS = \
 	main.o
 
 
-all: ${EXTENSION}
+all: $(EXTENSION)
 
 pre: cleanpre \
 	precompile.o
 
-${EXTENSION}: ${OBJECTS} precompile.o
-	${LINKER} ${LDLIBS} ${OBJECTS} ${LINKER_FLAGS} -o $@
+$(EXTENSION): $(OBJECTS) precompile.o
+	$(LINKER) $(OBJECTS) $(LINKER_FLAGS) $(LDLIBS) -o $@
 
 precompile.o: precompile.hpp
-	${COMPILER} ${COMPILER_FLAGS} -I/usr/include $< -o $@
+	$(COMPILER) $(COMPILER_FLAGS) -I/usr/include $< -o $@
 
 
 
@@ -56,19 +52,30 @@ main.o: main.cp Registry.h RegexReplace.h
 
 
 install:
-	${CP} ${EXTENSION} ${EXTENSION_DIR}
-	chmod 755 ${EXTENSION_DIR}/${EXTENSION}
-	echo "extension = "${EXTENSION}"\n" > ${INI_DIR}${INI}
-	chmod 644 ${INI_DIR}${INI}
-	ln -sf ${INI_DIR}${INI} /etc/php5/apache2/conf.d/
-	ln -sf ${INI_DIR}${INI} /etc/php5/cli/conf.d/
+	cp -f $(EXTENSION) $(EXTENSION_DIR)
+	chmod 644 $(EXTENSION_DIR)/$(EXTENSION)
+	echo "extension = "$(EXTENSION)"\n" > $(INI_DIR)$(INI)
+	chmod 644 $(INI_DIR)$(INI)
+	if [ -d $(PHPE)/apache2/conf.d/ ]; then \
+		ln -sf $(INI_DIR)$(INI) $(PHPE)/apache2/conf.d/;\
+	fi
+	if [ -d $(PHPE)/cli/conf.d/ ]; then \
+		ln -sf $(INI_DIR)$(INI) $(PHPE)/cli/conf.d/;\
+	fi
+	if [ -d $(PHPE)/cgi/conf.d/ ]; then \
+		ln -sf $(INI_DIR)$(INI) $(PHPE)/cgi/conf.d/;\
+	fi
 
 uninstall:
-	$(RM) ${EXTENSION_DIR}/${EXTENSION} ${INI_DIR}${INI} /etc/php5/apache2/conf.d/${INI} /etc/php5/cli/conf.d/${INI}
+	rm -f $(EXTENSION_DIR)/$(EXTENSION) \
+		$(INI_DIR)$(INI) \
+		$(PHPE)/apache2/conf.d/$(INI) \
+		$(PHPE)/cli/conf.d/$(INI) \
+		$(PHPE)/cgi/conf.d/$(INI)
 
 				
 clean:
-	${RM} ${EXTENSION} ${OBJECTS} precompile.o
+	rm -f $(EXTENSION) $(OBJECTS)
 
 cleanpre:
-	$(RM) precompile.o
+	rm -f precompile.o
