@@ -36,7 +36,6 @@ precompile.o: precompile.hpp
 	$(COMPILER) $(COMPILER_FLAGS) -I/usr/include $< -o $@
 
 
-
 Regex.o: Regex.cp Regex.h
 	$(CPP)
 
@@ -48,7 +47,6 @@ Registry.o: Registry.cp Registry.h
 
 main.o: main.cp Registry.h RegexReplace.h
 	$(CPP)
-
 
 
 install:

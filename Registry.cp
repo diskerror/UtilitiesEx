@@ -4,14 +4,15 @@
 
 using namespace std;
 
-thread_local Registry		*Registry::_instance		= nullptr;
-thread_local Php::Object	*Registry::_phpInstance		= nullptr;
+thread_local Registry*		Registry::_instance			= nullptr;
+thread_local Php::Object*	Registry::_phpInstance		= nullptr;
 thread_local bool			Registry::_fromGetInstance	= false;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 Registry::Registry()
 {
-	this->_lifo.reserve(1024);	//	make this run-time settable
+// 	this->_lifo.reserve(1024);		//	make this run-time or ini settable
+// 	this->_registry.reserve(1024);	//	make this run-time or ini settable
 	
 	//	When "getInstance" or "set" creates a PHP object we will have a
 	//		pointer to the C++ version of the same object.
@@ -25,14 +26,14 @@ Registry::~Registry()
 {
 }
 
+void Registry::__construct(){}
+
 void Registry::__destruct()
 {
 	while ( !this->_lifo.empty() ) {
-// 		Php::out << this->_registry[this->_lifo.back()] << std::endl;
 		this->_registry.erase( this->_lifo.back() );
 		this->_lifo.pop_back();
 	}
-// 	Php::out << "to here\n";
 }
 
 

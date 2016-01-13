@@ -36,9 +36,9 @@ PHPCPP_EXPORT void *get_module()
 		Php::ByVal("key", Php::Type::String, true),
 		Php::ByVal("value", Php::Type::Null, true)
 	});
-
+	
 	registry.method("pop", &Registry::pop, {});
-
+	
 	extension.add(std::move(registry));
 	
 // 	extension.onIdle([]() {
