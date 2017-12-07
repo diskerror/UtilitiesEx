@@ -1,6 +1,6 @@
 # PHP Utilities Extension
 
-DEPRECATED experiments with porting PHP objects into C++. The PHP-CPP library is useful but does not yield the best execution times compared to Zephir for the same routines.
+ABANDONDED experiments with porting PHP objects into C++. The PHP-CPP library is useful but does not yield the best execution times compared to Zephir for the same routines.
 
 *Registry* is a singleton implementing *ArrayAccess* and object access with **LIFO**, Last-In-First-Out behavior.
 
